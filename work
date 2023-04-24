@@ -57,3 +57,34 @@ length(acc1$DRUNK_DR)
 *There is 8,720 accidents with at least one drunk driver.*
 
 #Part two: Connecting data
+
+1. Connect to the person table. Join accident and driver table (work out which variable(s) to use).Identify drivers (PER_TYP == 1, see fars manual ) and subset on them. 
+
+
+```{r}
+acc_per <- left_join(acc, per, by = 'ST_CASE')
+
+subset(acc_per, PER_TYP == 1)
+```
+*Here I joined the accident data and the person data togehter by ST_CASE because that was the most consistant data between the two data sets. Then I subset the acc_per for PER_TYP to equal 1.*
+
+2. Tally the number of accidents by day of the week (DAY_WEEK), hour of the day (HOUR) and gender (SEX). Visualize the results!
+
+```{r}
+acc_per %>% group_by(DAY_WEEK) %>% tally() 
+ggplot(acc_per, aes(x = DAY_WEEK)) + geom_bar()
+```
+*Here is by days of the week* 
+
+```{r}
+acc_per %>% group_by(HOUR.x) %>% tally() 
+ggplot(acc_per, aes(x = HOUR.x)) + geom_bar()
+```
+*Here is by hours.There is a huge gap in the graph due to the fact that the data inputted 99 for the last hour of the day so now our graph seems to have a huge outlie. *
+
+```{r}
+acc_per %>% group_by(SEX) %>% tally() 
+ggplot(acc_per, aes(x = SEX)) + geom_bar()
+```
+
+*Here is by sex, we can see here that there is strange outliers when it comes to sex. There is 8 and 9 being used to describe the sex of someone though in the data I thought there would be only two sexs.*
