@@ -1,0 +1,59 @@
+---
+title: "Hoemwork 10"
+output: html_document
+---
+
+Name of team members: Angelina Allen
+Repository Link:
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+
+acc = read.csv("https://raw.githubusercontent.com/yumouqiu/DS202-Spring2023/main/Practice/data/fars2016/accident.csv")
+per = read.csv("https://raw.githubusercontent.com/yumouqiu/DS202-Spring2023/main/Practice/data/fars2016/person.csv")
+vec = read.csv("https://raw.githubusercontent.com/yumouqiu/DS202-Spring2023/main/Practice/data/fars2016/person.csv")
+head(acc)
+head(per)
+head(vec)
+```
+
+#Data Background
+
+1. Load the accident data, plot latitude and longitude on a map.
+
+```{r}
+acc %>% filter(LONGITUD < 0) %>% ggplot(aes(x = LONGITUD, y = LATITUDE)) + geom_point()
+
+states %>% ggplot(aes(x = long, y = lat)) + geom_path(aes(group = group)) + geom_point((aes(x = LONGITUD, y = LATITUDE)), size = 0.05, color = 'red', data = acc %>% filter(LONGITUD <0, LONGITUD > -130))
+```
+
+#Part 1: Accedent Data
+
+1. Are there some days of the week where more accidents happen than on others (use variable DAY_WEEK)?
+
+```{r}
+table(acc['DAY_WEEK'])
+```
+*We can see by this table that Sunday has the highest number of accidents then is goes Satuday, Monday, Friday, Tuesday, Thursday, Wednesday.*
+
+2. What time of the day do accidents happen (use variable HOUR)?
+
+```{r}
+table(acc['HOUR'])
+```
+*Most of the accients happen at 6 pm in the evening.*
+
+3. What is the number of accidents with at least one drunk driver (use variable DRUNK_DR)?
+
+```{r}
+acc1 <- acc %>% filter(DRUNK_DR >= 1)
+length(acc1$DRUNK_DR)
+```
+*There is 8,720 accidents with at least one drunk driver.*
+
+#Part two: Connecting data
